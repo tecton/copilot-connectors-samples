@@ -7,6 +7,12 @@ environmentFolderPath: ./env
 
 provision:
 
+  - uses: script
+    name: Ensure environment files
+    with:
+      run: node env.js
+      workingDirectory: scripts
+
   - uses: aadApp/create
     with:
       name: ${{APP_NAME}}-${{TEAMSFX_ENV}}
@@ -34,6 +40,11 @@ provision:
           parameters: ./infra/azure.parameters.json
           deploymentName: Create-resources-for-food-catalog-graph-connector
       bicepCliVersion: v0.9.1
+
+  - uses: cli/runNpmCommand
+    name: install dependencies
+    with:
+      args: install
 
   - uses: script
     name: Ensure tables and data
